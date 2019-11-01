@@ -41,8 +41,14 @@ router.get('/', function (req, res, next) {
 router.get('/api/topics', function (req, res) {
   // Tällä testataan vain että pyyntö toimii:
   //console.log("/api/topics toimii");
-  palvelu.haeKaikki(function (results) {
+  palvelu.getTopic(function (results) {
     res.json(results);
+  });
+});
+
+router.get('/api/topics/:id', function (req, res) {
+  palvelu.getSingleTopic(req, function (results) {
+      res.json(results)
   });
 });
 

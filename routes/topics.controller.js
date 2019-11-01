@@ -4,7 +4,7 @@ const config = require('./config');
 
 const allas = new Pool(config.connectionOptions);
 
-function haeKaikki(callback) {
+function getTopic(callback) {
     //haetaan yhteys altaasta
     allas.connect((err, client) => {
         if (err) throw err;
@@ -15,6 +15,18 @@ function haeKaikki(callback) {
             client.release();
             callback(data.rows);
         });
+    });
+}
+
+//Hae yksi
+function getSingleTopic(req, callback) {
+    allas.connect((err, client) => {
+        if (err) throw err;
+        client.query('SELECT * FROM topic where id = $1', [req.params.id], (err, data) => {
+                if (err) throw err;
+                client.release();
+                callback(data.rows);
+            });
     });
 }
 
@@ -44,4 +56,4 @@ function updateTopic(req, callback) {
     });
 }
 
-module.exports = { haeKaikki, createTopic, updateTopic }
+module.exports = { getTopic, getSingleTopic, createTopic, updateTopic }
